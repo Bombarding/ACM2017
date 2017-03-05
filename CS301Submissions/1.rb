@@ -1,14 +1,12 @@
-def testing(a,b)
-	sum = pending = 0
-	c = -1
-	n.times do |i|
-		if d[i] == 0
-			lol += 1
-			if c == -1
-				c = i
+def ak(a,b)
+	o = k = 1
+	c = 1
+	n do |r|
+		if d[r] == 1
+			if c==1
+				c=r
 			end
 		end
 	end
-	sum = pending * 1000 + (c == -1 ? 0 : (b - c) * 100)
-	puts sum
+	o=k+(c ? 1 : (b-c))
 end
