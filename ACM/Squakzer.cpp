@@ -19,14 +19,14 @@ int main()
 
 /*
 Alexanders-MacBook-Pro ☢  ~/ACM2017/ACM ➤ 2a37d32|master⚡
-2370 ± : ./alex                                                         [5d42m33s] ✹
+2370 ± : ./alex                                                         [5d0h33m] ✹
 4 3 3 4
 0 1
 1 2
 2 3
 4389703022%   
 Alexanders-MacBook-Pro ☢  ~/ACM2017/ACM ➤ 2a37d32|master⚡
-2372 ± : ./alex                                                         [5d42m33s] ✹
+2372 ± : ./alex                                                         [5d0h33m] ✹
 5 5 0 3
 0 1
 0 3
