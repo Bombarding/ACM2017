@@ -1,0 +1,41 @@
+# clear array
+REPI(i,50)
+  SET(found[i]=0)
+END
+
+# set max found
+SET(big=0)
+
+# read three pegs
+REP(3)
+
+  # get number of disks on peg
+  INT(0,50,n)
+
+  # get the disks
+  REPI(i,n)
+    SPACE INT(1,50,d[i])
+
+    # either first disk or smaller than previous disk
+#    ASSERT(i==0 || d[i] < d[i-1])
+
+    # disks can only appear once
+    ASSERT(found[d[i]-1]==0)
+
+    # disk found
+    SET(found[d[i]-1]=1)
+
+    # larger number found?
+    IF (d[i]>big) SET(big=d[i]) END
+  END
+
+  NEWLINE
+END
+
+# check found status
+REPI(i,50)
+
+  ASSERT((i<big && found[i] == 1) || (i >= big && found[i] == 0))
+
+END
+

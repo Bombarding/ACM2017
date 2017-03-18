@@ -1,0 +1,11 @@
+
+INT(1,50,n) SPACE
+REP(n)
+  REGEX("[A-Z]")
+END
+SPACE
+REP(n)
+  REGEX("[A-Z]")
+END
+NEWLINE
+
