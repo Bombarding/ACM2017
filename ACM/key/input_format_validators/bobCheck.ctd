@@ -1,0 +1,6 @@
+# get ciphertext
+REGEX("[A-Z]*") NEWLINE
+
+# get key
+REGEX("[A-Z]*") NEWLINE
+
