@@ -31,7 +31,7 @@ int main()
 /*
 Alexanders-MacBook-Pro ☢  ~/ACM2017/ACM ➤ 6f5fb6b|master⚡
 2499 ± : ./alex                                                       [5d6h01m] ✹ ✭
-TCCJWTPIIOBPPCEAPLJIZEXGR TRYME
+Key = TRYME
 --> Puts Original Text Here
 */
 
