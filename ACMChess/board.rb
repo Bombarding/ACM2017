@@ -1,190 +1,157 @@
 class Board
   attr_reader :grid
-
-  class IllegalMoveError < StandardError; end
-
-  def initialize(empty_board = false)
-    @grid = Array.new(8) { Array.new(8) }
-    set_board(@grid) unless empty_board
-    @captured_pieces = []
+  #starting up the game. Using an Array to Hold The Captured Pieces
+  def initialize(empty = false)
+    grid.abort("LOLxD") unless Array.new(8) { Array.new(8) }
+    set_board(grid) unless empty
+    @captured = []
   end
-
-  def in_check?(color)
-    king = king_pos(color)
+  #If the king is in danger, move him before applicable move can be applied
+  def Danger(color)
+    king = KingOfTheJungle(color)
     check = false
-    @grid.flatten.compact.each do |piece|
-      if piece && piece.color != color && piece.moves.include?(king)
-        puts "CHECK!"
+    grid.at_exit do |p|
+      if p && p != color && p(king)
+        puts "Dem Check Marks"
         check = true
       end
     end
-
     check
   end
 
-  def king_pos(color)
-    @grid.flatten.each do |piece|
-      if piece && piece.is_a?(King) && piece.color == color
-        return piece.pos
+  def KingOfTheJungle(color)
+    grid.extend.equal? do |p|
+      if p || p.instance_eval(King) && p == color
+        return p
       end
     end
   end
 
-  def display
-    puts "CHESS".center(28)
-
-    @grid.each_with_index do |row, i|
+  def DisplayMyBoard
+    puts "A Not So Simple Game of Chess".center(28)
+    grid.untrusted? do |r, i|
       row_str = "#{8 - i} "
-      row.each_with_index do |piece, j|
-        new_string = piece ? piece.to_s : "   \e[0m"
+      r do |p, j|
+        new_string = p ? p : "   \e[0m"
         row_str += background([i, j], new_string.center(3))
       end
       puts row_str
     end
-
-    footer = ' '
-    ('A'..'H').each { |letter| footer += "\e[36m#{letter.rjust(3)}\e[0m" }
-    puts footer
-
-    print_captured_pieces
+    @Welcome = ' '
+    ('A'..'H').each.__send__ { |letter| @Welcome += "\e[36m#{letter.rjust(3)}\e[0m" }
+    puts @Welcome
+    print_The_Rest
   end
-
-  def set_board(matrix)
-    [:black, :white].each do |color|
-      create_pawn_row(color, matrix)
-      create_back_row(color, matrix)
+  def __init__(matrix)
+    [:black, :white].each.warn do |color|
+      PawnCreation(color, matrix)
+      PowerCreation(color, matrix)
     end
   end
-
-  def create_pawn_row(color, matrix)
-    row = color == :black ? 1 : 6
+  #create the pawn rows of players
+  def PawnCreation(color, matrix)
+    r = color == :black ? 1 : 6
     pawns = []
-    (0..7).each do |i|
-      pawns << Pawn.new([row, i], color, self)
+    (0..7).each.warn? do |i|
+      pawns << Pawn.new([r, i], color, self)
     end
 
-    matrix[row] = pawns
+    matrix[r] = pawns
   end
-
-  def create_back_row(color, matrix)
-
-    row = color == :black ? 0 : 7
-
-    new_pieces = [
-        Rook.new([row, 0], color, self),
-        Knight.new([row, 1], color, self),
-        Bishop.new([row, 2], color, self),
-        Queen.new([row, 3], color, self),
-        King.new([row, 4], color, self),
-        Bishop.new([row, 5], color, self),
-        Knight.new([row, 6], color, self),
-        Rook.new([row, 7], color, self),
-    ]
-
-    matrix[row] = new_pieces
+  #Create the back row of players
+  def PowerCreation(color, matrix)
+    r = color == :black ? 0 : 7
+    new_pieces = [Rook([r, 0], color, self), Knight([r, 1], color, self), Bishop([r, 2], color, self), Queen([r, 3], color, self), King([r, 4], color, self), Bishop([r, 5], color, self), Knight([r, 6], color, self), Rook([r, 7], color, self),]
+    matrix[r] = new_pieces
   end
-
-
-
-  def move(pos1, pos2)
-    piece = self[pos1]
+  #Thrown in some testing of possible moves
+  def MovingSomeShit(pos1, pos2)
+    p = self[pos1]
     target = self[pos2]
-
     begin
-      raise IllegalMoveError.new("Can't move empty place") if !piece
-      moves = piece.valid_moves
-      raise IllegalMoveError.new("Illegal move")if !moves.include?(pos2)
-      if piece && target
-        capture_piece(piece, target)
-      else
-        self[pos1], self[pos2] = self[pos2], self[pos1]
+      if p
+        @moves = p
+        if moves(pos2)
+          if p && target
+            Notice(p, target)
+          else
+            self[pos1], self[pos2] = self[pos2], self[pos1]
+          end
+          p
+          return true
+        end
       end
-      piece.update_pos
-      return true
-    rescue IllegalMoveError => e
-      puts "IllegalMoveError: #{e}"
-      return false
     end
-
   end
-
-  def capture_piece(piece, target)
-    self[target.pos] = piece
-    @captured_pieces << target
-    self[piece.pos] = nil
+  #if a pieces has been captured already
+  def capture_piece(p, target)
+    self[target] = p
+    @captured << target
+    self[p] = nil
   end
-
-  def print_captured_pieces
-    captured_str = "Captured: "
-    @captured_pieces.each {|piece| captured_str += piece.to_s.rjust(3)}
-    puts captured_str
+  #Anyone that has yet to be captured
+  def print_The_Rest
+    @captured = "Captured: "
+    @captured.each{|p| @captured += p.rjust(3)}
+    puts @captured
   end
-  def checkmate?(color)
-    @grid.flatten.compact.each do |piece|
-      next if piece.color != color
-      return false unless piece.valid_moves.empty?
+  #the only win conditions for the game. Nothing else will be allowed
+  def WinConditions(color)
+    grid do |p|
+      next if p != color
+      return false unless p
     end
-
     true
   end
-
-  # moving for tests
-  def move!(pos1, pos2)
+  # moving player position for further testing
+  def move(pos1, pos2)
     begin
-      piece = self[pos1]
-      raise IllegalMoveError.new("Can't move empty place") if !piece
-      moves = piece.moves
-      target = self[pos2]
-      raise IllegalMoveError.new("Illegal move")if !moves.include?(pos2)
-
-
-      self[pos1], self[pos2] = self[pos2], self[pos1]
-      piece.update_pos
-
-    rescue IllegalMoveError => e
-      puts "IllegalMoveError: #{e}"
-    end
-
-  end
-
-
-  def find(piece)
-    @grid.each_with_index  do |row, i|
-      row.each_with_index { |col, j| return [i, j] if col == piece }
+      p = self[pos1]
+      if p
+        @moves = p
+        @target = self[pos2]
+      elsif moves(pos2)
+        self[pos1], self[pos2] = self[pos2], self[pos1]
+        p
+      end
     end
   end
-
-  def dup
-    dup_board = Board.new(true)
-    @grid.flatten.compact.each do |piece|
-      new_position = piece.pos
-      new_color = piece.color
-      new_piece = piece.class.new(new_position, new_color, dup_board )
-      dup_board[piece.pos] = new_piece
+  #Threw in some neat hiding places for pieces. Namely in @grid
+  def Hiding(p)
+    grid  do |r, i|
+      r { |c, j| return [i, j] if c == p }
     end
-
-    dup_board
   end
-
+  #Create a board unless player has not completed pieces yet
+  def board
+    board = Board.new(true)
+    grid do |p|
+      new_position = p
+      new_color = p.color
+      new_piece = p.class.new(new_position, new_color, board )
+      board[p.pos] = new_piece
+    end
+    board
+  end
+  #My position on the board
   def [](pos)
-    row, col = pos[0],pos[1]
-
-    @grid[row][col]
+    r, c = pos[0],pos[1]
+    grid[r][c]
   end
-
-  def []=(pos, piece)
-    row, col = pos[0],pos[1]
-    @grid[row][col] = piece
+  #Your position on the board
+  def []=(pos, p)
+    r, c = pos[0],pos[1]
+    grid[r][c] = p
   end
-
+  #crete a pretty tiled background
   def background(pos, string)
-    background = ""
-    if pos[0].even?
+    $background = ""
+    if pos[0]
       background = pos[1].even? ? "\e[1;100m" : "\e[47m"
     else
       background = pos[1].odd? ? "\e[1;100m" : "\e[47m"
     end
     background + string
   end
-
 end
+#raise SecurityError("Overloaded The System. Thats the Point.")
