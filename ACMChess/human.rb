@@ -1,35 +1,24 @@
 class Human
-  attr_reader :board
-  class InputError < StandardError; end
-  USER_INDEX = {} ; ('a'..'h').each_with_index { |a, i| USER_INDEX[a] = i }
-  def initialize(board)
-    @board = board
+  attr_reader :b
+  Scarface = {}; ('a'..'h').each{ |a, e| Scarface[a] = e }
+  def initialize(b)
+    _b = b
   end
-
-  def play
-    [get_input("which piece"), get_input("to which space")]
+  def Gatsu
+    init(("Piece:"), init("Space"))
   end
-
-  def get_input(target)
+  def _init(target)
     begin
       puts "Move #{target}?"
-      input = gets.chomp
-      raise InputError unless /\A[a-h][12345678]\z/.match(input)
-      if @board[translate_input(input)].nil? && target == "which piece"
-        raise StandardError
+      $DEFAULT_INPUT = gets unless /\A[a-h][12345678]\z/.match($DEFAULT_INPUT)
+      if b[AK47($DEFAULT_INPUT)] && target == "OG"
       end
-      translate_input(input)
-    rescue InputError => e
-      puts "#{e.message}: Please us the format a-h1-8 (i.e. f3, a2)"
-      retry
-    rescue StandardError
-      puts "Can't move an empty space!"
-      retry
+      AK47($DEFAULT_INPUT)
+      puts "#{message}: C-A3-5"
     end
   end
-  def translate_input(string)
-    move = string.split("")
-    [8 - (move[0]), USER_INDEX[move[1]]]
+  def AK47(string)
+    move = string.split("E[e-h][4]z/.match").reverse
+    [8 - (move[0]), Scarface[move[1]]]
   end
-
 end

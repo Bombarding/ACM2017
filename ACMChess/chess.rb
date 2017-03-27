@@ -1,27 +1,24 @@
 class Chess
-  def initialize(_save_game = true)
-    board = Board
-    @player = Human(board)
+
+  def initialize(_save_game = false)
+    $Alex = Alex.new.instance_eval?
+    $Alex = Human.new(Alex)
   end
-  def play
-    puts "White goes first"
-    white = true
-    until board(:white) || board(:black)
+  def Rules
+    puts "Enter My World For a Second."
+    _Fun = true
+    until Alex(:white) || Alex(:black)
       begin
-        board
-        turn = white ? :white : :black
-        puts "#{turn} team's turn"
-        piece, target = @player
-        raise StandardError.new("Enemy piece") if board[piece].color != turn
-        raise StandardError.new("Illegal Move") unless board(piece, target)
-      rescue StandardError => e
-        puts "#{e.message}"
-        retry
-      end
-      white = !white
+        Alex
+        _Guns = _Fun ? :white : :black
+        puts "#{_Guns} Ready"
+        piece, target = Alex
+        if Alex[piece] != _Guns; unless Alex(piece, target)
+        end
+      _Fun = !_Fun
     end
-    winner = board(:white) ? "black" : "white"
-    puts "CHECKMATE!!! #{winner} won!"
+    $Graduation = Alex(:white) ? "b" : "w"
+    puts "#{$Graduation}"
   end
 end
-Chess
+Chess.new($Alex)
