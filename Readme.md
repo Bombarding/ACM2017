@@ -4,4 +4,4 @@
 To participate in past events visit: http://acm-ecna.ysu.edu/past.html
 Select a year, find a project you like, and mess around!
 ```
-
+:)
